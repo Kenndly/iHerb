@@ -48,11 +48,51 @@ public class UiController : MonoBehaviour
     public CanvasGroup FAQ;
     public CanvasGroup Market;
     public CanvasGroup Profile;
+    public List<Product> products = new List<Product>();
+    public GameObject prefabofproduct;
+    public GameObject PlaceForProducts;
+    public TMP_InputField ProductField;
+    public TextMeshProUGUI CheckesText;
     public enum MainScreen
     {
         FAQ,
         Market,
         Profile
+    }
+    public void createProduct()
+    {
+        if (ProductField.text.Length > 1)
+        {
+            var _object = Instantiate(prefabofproduct, PlaceForProducts.transform);
+            _object.GetComponent<Product>().ProductName = ProductField.text;
+            _object.GetComponent<Product>().UpdateTextAndComponents();
+            ProductField.text = string.Empty;
+        }
+    }
+    public void Check()
+    {
+        CheckesText.text = string.Empty;
+        int k = 0;
+        for (int i = 0; i < products.Count; i++)
+        {
+            foreach (Product product in products)
+            {
+                if (products[i].BadComponnets.Contains(product.ProductName.ToLower()))
+                {
+                    CheckesText.text += products[i].ProductName + " несовместим с " + product.ProductName.ToLower() + "\n";
+                    k++;
+                }
+            }
+        }
+        if (k == 0 && products.Count > 1)
+        {
+
+            CheckesText.text = "Несовмещаемых компонентов найдено не было";
+        }
+        if (k == 0 && products.Count < 2)
+        {
+            CheckesText.text = "Для проверки нужно больше 1 компонента";
+        }
     }
     public void OnBoradingosOver()
     {
@@ -161,12 +201,54 @@ public class UiController : MonoBehaviour
 
     public void UpdateAnalys()
     {
-        FirstAnalysText.text = "1. " + PlayerPrefs.GetString("FirstAnalys");
-        SecondAnalysText.text = "2. " + PlayerPrefs.GetString("SecondAnalys");
-        ThirdAnalysText.text = "3. " + PlayerPrefs.GetString("ThirdAnalys");
-        FourthAnalysText.text = "4. " + PlayerPrefs.GetString("FourthAnalys");
-        FivethAnalysText.text = "5. " + PlayerPrefs.GetString("FivethAnalys");
-        SixthAnalysText.text = "6. " + PlayerPrefs.GetString("SixthAnalys");
+        if (PlayerPrefs.GetString("FirstAnalys").Length > 1)
+        {
+            FirstAnalysText.text = "1. " + PlayerPrefs.GetString("FirstAnalys");
+        }
+        else
+        {
+            SecondAnalysText.text = "1. Не заполнено";
+        }
+        if (PlayerPrefs.GetString("SecondAnalys").Length > 1)
+        {
+            SecondAnalysText.text = "2. " + PlayerPrefs.GetString("SecondAnalys");
+        }
+        else
+        {
+            SecondAnalysText.text = "2. Не заполнено";
+        }
+        if (PlayerPrefs.GetString("ThirdAnalys").Length > 1)
+        {
+            ThirdAnalysText.text = "3. " + PlayerPrefs.GetString("ThirdAnalys");
+        }
+        else
+        {
+            ThirdAnalysText.text = "3. Не заполнено";
+        }
+        if (PlayerPrefs.GetString("FourthAnalys").Length > 1)
+        {
+            FourthAnalysText.text = "4. " + PlayerPrefs.GetString("FourthAnalys");
+        }
+        else
+        {
+            FourthAnalysText.text = "4. Не заполнено";
+        }
+        if (PlayerPrefs.GetString("FivethAnalys").Length > 1)
+        {
+            FivethAnalysText.text = "5. " + PlayerPrefs.GetString("FivethAnalys");
+        }
+        else
+        {
+            FivethAnalysText.text = "5. Не заполнено";
+        }
+        if (PlayerPrefs.GetString("SixthAnalys").Length > 1)
+        {
+            SixthAnalysText.text = "6. " + PlayerPrefs.GetString("SixthAnalys");
+        }
+        else
+        {
+            SixthAnalysText.text = "6. Не заполнено";
+        }
     }
     public void SaveParametrs()
     {
